@@ -1,0 +1,10 @@
+# Executables
+a.out
+
+# IntelliJ files
+*.iml
+.idea/
+
+# Target directories
+out/
+target/
