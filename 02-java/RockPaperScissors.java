@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.stream.Stream;
 
 public class RockPaperScissors {
-
     public interface GameMove {
         int playAgainst(GameMove other);
         int getRoundBonus(GameMove other);
@@ -15,20 +14,17 @@ public class RockPaperScissors {
     public enum LiteralMove implements GameMove {
         ROCK {
             public int playAgainst(GameMove other) {
-                if (other == SCISSORS) return 1;
-                else return super.playAgainst(other);
+                return (other == SCISSORS) ? 1 : super.playAgainst(other);
             }
         },
         PAPER {
             public int playAgainst(GameMove other) {
-                if (other == ROCK) return 1;
-                else return super.playAgainst(other);
+                return (other == ROCK) ? 1 : super.playAgainst(other);
             }
         },
         SCISSORS {
             public int playAgainst(GameMove other) {
-                if (other == PAPER) return 1;
-                else return super.playAgainst(other);
+                return (other == PAPER) ? 1 : super.playAgainst(other);
             }
         };
 
@@ -41,8 +37,7 @@ public class RockPaperScissors {
         }
 
         public int playAgainst(GameMove other) {
-            if (this == other) return 0;
-            else return -1;
+            return (this == other) ? 0 : -1;
         }
 
         public int getRoundBonus(GameMove other) {
