@@ -6,6 +6,7 @@ My Advent of Code 2022 solutions in the following languages:
 - Java 17
   - [Day 2: Rock Paper Scissors](./02-java)
   - [Day 4: Camp Cleanup](./04-java)
+  - [Day 5: Supply Stacks](./05-java)
 - Rust
   - [Day 3: Rucksack Reorganization](./03-rust)
 
