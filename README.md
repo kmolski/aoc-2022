@@ -8,6 +8,7 @@ My Advent of Code 2022 solutions in the following languages:
   - [Day 4: Camp Cleanup](./04-java)
   - [Day 5: Supply Stacks](./05-java)
   - [Day 7: No Space Left On Device](./07-java)
+  - [Day 8: Treetop Tree House](./08-java)
 - Rust
   - [Day 3: Rucksack Reorganization](./03-rust)
   - [Day 6: Tuning Trouble](./06-rust)
