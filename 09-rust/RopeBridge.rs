@@ -71,7 +71,7 @@ fn read_moves(filename: String) -> Vec<Move> {
 
 fn solve<const KNOTS: usize>(moves: &Vec<Move>) -> usize {
     let mut knots = [Position(0, 0); KNOTS];
-    let mut visited: HashSet<Position> = HashSet::from([knots[0]]);
+    let mut visited = HashSet::from([knots[0]]);
 
     for m in moves {
         for _ in 0..m.length {
