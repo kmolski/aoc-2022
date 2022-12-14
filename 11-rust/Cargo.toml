@@ -1,0 +1,8 @@
+[package]
+name = "MonkeyInTheMiddle"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "monkey_in_the_middle"
+path = "MonkeyInTheMiddle.rs"

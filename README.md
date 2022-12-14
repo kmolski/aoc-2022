@@ -14,6 +14,7 @@ My Advent of Code 2022 solutions in the following languages:
   - [Day 3: Rucksack Reorganization](./03-rust)
   - [Day 6: Tuning Trouble](./06-rust)
   - [Day 9: Rope Bridge](./09-rust)
+  - [Day 11: Monkey in the Middle](./11-rust)
 
 Each top-level folder contains:
 - the solution source code
