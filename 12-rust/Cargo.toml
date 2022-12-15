@@ -1,0 +1,8 @@
+[package]
+name = "HillClimbingAlgorithm"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "hill_climbing_algorithm"
+path = "HillClimbingAlgorithm.rs"
