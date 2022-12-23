@@ -2,16 +2,16 @@
 
 ## Expected result
 ```
-$ make run
-./RucksackReorganization example.txt
+$ cargo run --release example.txt
+    Finished release [optimized] target(s) in 0.00s
+     Running `target/release/rucksack_reorganization example.txt`
 Part 1: 157
 Part 2: 70
-./RucksackReorganization data.txt
+$ cargo run --release data.txt
+    Finished release [optimized] target(s) in 0.01s
+     Running `target/release/rucksack_reorganization data.txt`
 Part 1: 7581
 Part 2: 2525
-$ make test
-./RucksackReorganization example.txt | diff - example.out
-./RucksackReorganization data.txt | diff - data.out
 ```
 
 ## Tested on

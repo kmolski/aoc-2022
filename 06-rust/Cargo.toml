@@ -1,0 +1,8 @@
+[package]
+name = "TuningTrouble"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "tuning_trouble"
+path = "TuningTrouble.rs"

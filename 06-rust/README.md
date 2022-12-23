@@ -2,16 +2,16 @@
 
 ## Expected result
 ```
-$ make run
-./TuningTrouble example.txt
+$ cargo run --release example.txt
+    Finished release [optimized] target(s) in 0.00s
+     Running `target/release/tuning_trouble example.txt`
 Part 1: 7
 Part 2: 19
-./TuningTrouble data.txt
+$ cargo run --release data.txt
+    Finished release [optimized] target(s) in 0.00s
+     Running `target/release/tuning_trouble data.txt`
 Part 1: 1794
 Part 2: 2851
-$ make test
-./TuningTrouble example.txt | diff - example.out
-./TuningTrouble data.txt | diff - data.out
 ```
 
 ## Tested on

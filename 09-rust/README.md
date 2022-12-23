@@ -2,16 +2,16 @@
 
 ## Expected result
 ```
-$ make run
-./RopeBridge example.txt
+$ cargo run --release example.txt
+    Finished release [optimized] target(s) in 0.01s
+     Running `target/release/rope_bridge example.txt`
 Part 1: 13
 Part 2: 1
-./RopeBridge data.txt
+$ cargo run --release data.txt
+    Finished release [optimized] target(s) in 0.01s
+     Running `target/release/rope_bridge data.txt`
 Part 1: 6337
 Part 2: 2455
-$ make test
-./RopeBridge example.txt | diff - example.out
-./RopeBridge data.txt | diff - data.out
 ```
 
 ## Tested on
