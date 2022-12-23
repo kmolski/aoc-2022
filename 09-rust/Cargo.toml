@@ -1,0 +1,8 @@
+[package]
+name = "RopeBridge"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "rope_bridge"
+path = "RopeBridge.rs"
