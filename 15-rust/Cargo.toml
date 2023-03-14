@@ -1,0 +1,11 @@
+[package]
+name = "BeaconExclusionZone"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "beacon_exclusion_zone"
+path = "BeaconExclusionZone.rs"
+
+[dependencies]
+regex = "1.7.1"
