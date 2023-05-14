@@ -7,7 +7,7 @@ on whole numbers. We can still use some special properties of our data, though.
 
 First of all, all tests check if the worry level is divisible by some number.
 This means that we don't actually care about the worry level value, but rather
-its remainder for different tests moduli. (and yes, that's the plural form of modulus!)
+its remainder for different tests moduli.
 
 But how do we calculate the new worry levels? Well, it turns out that in our data only
 addition and multiplication is used in monkeys' formulas. Luckily, those operations are
