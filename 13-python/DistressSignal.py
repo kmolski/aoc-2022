@@ -13,15 +13,16 @@ def parse_messages(text):
 
 
 def sorted_composite(left, right):
-    for t in zip_longest(left, right):
-        match t:
+    for pair in zip_longest(left, right):
+        match pair:
             case (None, _):
                 return True
             case (_, None):
                 return False
             case (fst, snd):
                 cmp = sorted_pair(fst, snd)
-                if cmp is not None: return cmp
+                if cmp is not None:
+                    return cmp
 
 
 def sorted_pair(left, right):
@@ -30,7 +31,8 @@ def sorted_pair(left, right):
             return fst < snd
         case (list(_), list(_)):
             cmp = sorted_composite(left, right)
-            if cmp is not None: return cmp
+            if cmp is not None:
+                return cmp
         case (list(_), int(_)):
             return sorted_pair(left, [right])
         case (int(_), list(_)):
@@ -46,7 +48,7 @@ def part_1(pairs):
 
 def part_2(pairs):
     packets = list(chain.from_iterable(pairs))
-    packets += [ [[2]], [[6]] ]
+    packets += [[[2]], [[6]]]
 
     # bubble sort
     for i in range(len(packets) - 1, 0, -1):
@@ -57,7 +59,7 @@ def part_2(pairs):
     return (packets.index([[2]]) + 1) * (packets.index([[6]]) + 1)
 
 
-with open(argv[1]) as input_file:
+with open(argv[1], encoding="utf-8") as input_file:
     pairs = parse_messages(input_file.read())
 
 print(f"Part 1: {part_1(pairs)}")
