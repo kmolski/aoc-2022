@@ -26,7 +26,7 @@ fn find_msg_part(buffer: &String, n_unique: usize) -> usize {
 }
 
 fn main() {
-    let filename = args().skip(1).next().unwrap();
+    let filename = args().nth(1).unwrap();
     let buffer = read_buffer(filename);
 
     println!("Part 1: {}", find_msg_part(&buffer, 4));

@@ -19,7 +19,7 @@ fn split_in_half(str: &String) -> (&str, &str) {
 fn find_repeated_items((first, second): (&str, &str)) -> HashSet<u8> {
     let first_set: HashSet<_> = first.bytes().collect();
     let second_set: HashSet<_> = second.bytes().collect();
-    first_set.intersection(&second_set).map(|c| *c).collect()
+    first_set.intersection(&second_set).copied().collect()
 }
 
 fn item_to_priority(c: u8) -> u32 {
@@ -30,7 +30,7 @@ fn item_to_priority(c: u8) -> u32 {
     }
 }
 
-fn part_1(rucksacks: &Vec<String>) -> u32 {
+fn part_1(rucksacks: &[String]) -> u32 {
     rucksacks.iter()
         .map(split_in_half)
         .flat_map(find_repeated_items)
@@ -41,12 +41,12 @@ fn part_1(rucksacks: &Vec<String>) -> u32 {
 fn find_group_badge(rucksacks: &[String]) -> u8 {
     rucksacks.iter()
         .map(|sack| sack.bytes().collect::<HashSet<_>>())
-        .reduce(|accum, sack| accum.intersection(&sack).map(|c| *c).collect())
+        .reduce(|accum, sack| accum.intersection(&sack).copied().collect())
         .unwrap().into_iter()
         .next().expect("No badge item found")
 }
 
-fn part_2(rucksacks: &Vec<String>) -> u32 {
+fn part_2(rucksacks: &[String]) -> u32 {
     rucksacks.chunks(3)
         .map(find_group_badge)
         .map(item_to_priority)
@@ -54,7 +54,7 @@ fn part_2(rucksacks: &Vec<String>) -> u32 {
 }
 
 fn main() {
-    let filename = args().skip(1).next().unwrap();
+    let filename = args().nth(1).unwrap();
     let rucksacks = read_rucksacks(filename);
 
     println!("Part 1: {}", part_1(&rucksacks));

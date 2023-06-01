@@ -20,7 +20,7 @@ fn find_around((x, y): (usize, usize), (max_x, max_y): (usize, usize)) -> impl I
 
 fn visit_position(pos: (usize, usize), prev_dist: i64, coord_to_steps: &mut HashMap<(usize, usize), i64>) {
     let new_shortest = prev_dist + 1;
-    if let None = coord_to_steps.get(&pos).filter(|&&dist| new_shortest >= dist) {
+    if coord_to_steps.get(&pos).filter(|&&dist| new_shortest >= dist).is_none() {
         coord_to_steps.insert(pos, new_shortest);
     }
 }
@@ -44,7 +44,7 @@ fn solve_part(map: &Vec<Vec<u8>>, from_square: u8) -> i64 {
         visit_position(position.0, position.1, &mut coord_to_steps);
         let neighborhood = find_around(position.0, dimensions);
         for pos @ (x, y) in neighborhood.filter(|&(x, y)| is_reachable(map[y][x], position.2)) {
-            if let None = coord_to_steps.get(&pos) {
+            if coord_to_steps.get(&pos).is_none() {
                 let new = (pos, coord_to_steps[&position.0], map[y][x]);
                 if !to_visit.contains(&new) {
                     to_visit.push_back(new);
@@ -56,8 +56,8 @@ fn solve_part(map: &Vec<Vec<u8>>, from_square: u8) -> i64 {
     let start_coord = map.iter()
         .enumerate()
         .flat_map(|(y, row)| row.iter().enumerate().filter(|(_, c)| **c == from_square).map(move |(x, _)| (x, y)))
-        .filter(|pos| coord_to_steps.contains_key(&pos))
-        .min_by_key(|pos| coord_to_steps[&pos])
+        .filter(|pos| coord_to_steps.contains_key(pos))
+        .min_by_key(|pos| coord_to_steps[pos])
         .unwrap();
     coord_to_steps[&start_coord]
 }
@@ -70,6 +70,6 @@ fn solve(filename: &String) {
 }
 
 fn main() {
-    let filename = args().skip(1).next().unwrap();
+    let filename = args().nth(1).unwrap();
     solve(&filename);
 }

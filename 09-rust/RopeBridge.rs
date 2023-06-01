@@ -87,7 +87,7 @@ fn solve<const KNOTS: usize>(moves: &Vec<Move>) -> usize {
 }
 
 fn main() {
-    let filename = args().skip(1).next().unwrap();
+    let filename = args().nth(1).unwrap();
     let moves = read_moves(filename);
 
     println!("Part 1: {}", solve::<2>(&moves));

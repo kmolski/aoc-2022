@@ -48,7 +48,7 @@ impl ModularArithmetic<ModulusSet> for ModulusSet {}
 
 impl ModulusSet {
     fn get(&mut self, modulus: u64) -> u64 {
-        if let None = self.modulus_to_rem.get(&modulus) {
+        if self.modulus_to_rem.get(&modulus).is_none() {
             let rem = self.modulus_to_rem[&u64::MAX] % modulus;
             self.modulus_to_rem.insert(modulus, rem);
         }
@@ -113,7 +113,7 @@ fn read_monkey(section: &str) -> Monkey<u64> {
     let id = lines[0].trim_matches(|c: char| !c.is_numeric()).parse().unwrap();
     let items = lines[1].split_once(": ").unwrap().1.split(", ").flat_map(str::parse).collect();
 
-    let tokens: Vec<&str> = lines[2].split_once(" = ").unwrap().1.split(" ").collect();
+    let tokens: Vec<&str> = lines[2].split_once(" = ").unwrap().1.split(' ').collect();
     let operator = match tokens[1] {
         "+" => Operator::Add,
         "*" => Operator::Multiply,
@@ -139,7 +139,7 @@ fn read_file(filename: &String) -> Vec<Monkey<u64>> {
     content.split("\n\n").map(read_monkey).collect()
 }
 
-fn get_monkeys_with_modulus(monkeys: &Vec<Monkey<u64>>) -> Vec<Monkey<ModulusSet>> {
+fn get_monkeys_with_modulus(monkeys: &[Monkey<u64>]) -> Vec<Monkey<ModulusSet>> {
     let moduli: Vec<u64> = monkeys.iter().map(|m| m.test.divisible_by).collect();
     monkeys.iter().map(|m|
         Monkey {
@@ -190,6 +190,6 @@ fn solve(filename: &String) {
 }
 
 fn main() {
-    let filename = args().skip(1).next().unwrap();
+    let filename = args().nth(1).unwrap();
     solve(&filename);
 }
