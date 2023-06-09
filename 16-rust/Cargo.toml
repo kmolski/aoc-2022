@@ -1,0 +1,11 @@
+[package]
+name = "ProboscideaVolcanium"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "proboscidea_volcanium"
+path = "ProboscideaVolcanium.rs"
+
+[dependencies]
+regex = "1.7.1"
