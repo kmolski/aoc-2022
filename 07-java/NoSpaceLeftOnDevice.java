@@ -88,21 +88,19 @@ public class NoSpaceLeftOnDevice {
         return shellState;
     }
 
-    private static Set<Directory> collectDirs(Directory dir, Set<Directory> directories) {
-        var finalDirectories = (directories == null) ? new HashSet<Directory>() : directories;
-
-        finalDirectories.add(dir);
+    private static Set<Directory> collectDirs(Directory dir, final Set<Directory> directories) {
+        directories.add(dir);
         dir.children().forEach((__, child) -> {
             if (child instanceof Directory childDir) {
-                collectDirs(childDir, finalDirectories);
+                collectDirs(childDir, directories);
             }
         });
 
-        return finalDirectories;
+        return directories;
     }
 
     private static int part1(ShellState shellState) {
-        return collectDirs(shellState.directoryStack.getFirst(), null).stream()
+        return collectDirs(shellState.directoryStack.getFirst(), new HashSet<>()).stream()
                 .filter(dir -> dir.size() <= 100_000)
                 .mapToInt(Directory::size)
                 .sum();
@@ -110,7 +108,7 @@ public class NoSpaceLeftOnDevice {
 
     private static int part2(ShellState shellState) {
         var availableSize = 70_000_000 - shellState.directoryStack.getFirst().size();
-        return collectDirs(shellState.directoryStack.getFirst(), null).stream()
+        return collectDirs(shellState.directoryStack.getFirst(), new HashSet<>()).stream()
                 .filter(dir -> availableSize + dir.size() >= 30_000_000)
                 .min(Comparator.comparing(Directory::size))
                 .get().size();

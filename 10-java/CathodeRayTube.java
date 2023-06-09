@@ -25,8 +25,13 @@ public class CathodeRayTube {
         }
     }
 
+    private static boolean isSpriteVisible(int currentCycle, int accumulator) {
+        int crtPosition = (currentCycle - 1) % 40;
+        return Math.abs(crtPosition - accumulator) <= 1;
+    }
+
     private static void updateCrtDisplay(HandheldState handheldState, int currentCycle, int accumulator) {
-        handheldState.crtDisplay.append((Math.abs((currentCycle - 1) % 40 - accumulator) <= 1) ? '#' : '.');
+        handheldState.crtDisplay.append(isSpriteVisible(currentCycle, accumulator) ? '#' : '.');
         if (currentCycle % 40 == 0) {
             handheldState.crtDisplay.append(System.lineSeparator());
         }
