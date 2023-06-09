@@ -31,14 +31,14 @@ fn read_file(filename: &String) -> Vec<Sensor> {
 }
 
 fn read_line(line: &str, regex: &Regex) -> Sensor {
-    let captures = regex.captures(line).expect(&format!("Line does not match: {line}"));
+    let captures = regex.captures(line).unwrap_or_else(|| panic!("Line does not match: {line}"));
     let self_pos = Position(captures[1].parse().unwrap(), captures[2].parse().unwrap());
     let peer_pos = Position(captures[3].parse().unwrap(), captures[4].parse().unwrap());
 
     Sensor { self_pos, peer_pos, distance: self_pos.manhattan_dist(&peer_pos) }
 }
 
-fn solve_part_1(sensors: &Vec<Sensor>, row_index: isize) -> usize {
+fn solve_part_1(sensors: &[Sensor], row_index: isize) -> usize {
     let mut unavailable_positions = HashSet::new();
 
     for sensor in sensors {
@@ -58,23 +58,23 @@ fn solve_part_1(sensors: &Vec<Sensor>, row_index: isize) -> usize {
     unavailable_positions.len()
 }
 
-fn check_pos(sensors: &Vec<Sensor>, skip_id: usize, max_dimension: isize, pos: Position) -> Option<Position> {
+fn check_pos(sensors: &[Sensor], skip_id: usize, max_dimension: isize, pos: Position) -> Option<Position> {
     if pos.0 < 0 || pos.0 > max_dimension || pos.1 < 0 || pos.1 > max_dimension {
-        return None;
+        return None; // outside the beacon search range
     }
 
     for (_, other) in sensors.iter().enumerate().filter(|(other_id, _)| *other_id != skip_id) {
         if pos.manhattan_dist(&other.self_pos) <= other.distance {
-            return None;
+            return None; // within some other sensor's detection range
         }
     }
-    return Some(pos)
+    Some(pos)
 }
 
-fn find_empty_pos(sensors: &Vec<Sensor>, max_dimension: isize) -> Position {
+fn find_empty_pos(sensors: &[Sensor], max_dimension: isize) -> Position {
     for (id, sensor) in sensors.iter().enumerate() {
         let dist = sensor.distance;
-        for i in 0..dist {
+        for i in 0..dist { // iterate along 4 edges of the sensor's square (tilted by 45 deg)
             let top = Position(sensor.self_pos.0 - i, sensor.self_pos.1 - dist - 1 + i);
             let left = Position(sensor.self_pos.0 - dist - 1 + i, sensor.self_pos.1 + i);
             let right = Position(sensor.self_pos.0 + dist + 1 - i, sensor.self_pos.1 - i);
@@ -91,13 +91,13 @@ fn find_empty_pos(sensors: &Vec<Sensor>, max_dimension: isize) -> Position {
     unreachable!()
 }
 
-fn solve_part_2(sensors: &Vec<Sensor>, max_dimension: isize) -> isize {
+fn solve_part_2(sensors: &[Sensor], max_dimension: isize) -> isize {
     let empty_pos = find_empty_pos(sensors, max_dimension);
     empty_pos.0 * 4_000_000 + empty_pos.1
 }
 
 fn main() {
-    let filename = args().skip(1).next().unwrap();
+    let filename = args().nth(1).unwrap();
     let beacons = read_file(&filename);
 
     println!("Part 1: {}", solve_part_1(&beacons, 2_000_000));

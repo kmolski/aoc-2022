@@ -22,18 +22,18 @@ fn read_file(filename: &String) -> HashMap<Position, Block> {
 
 fn read_line(line: &str) -> impl Iterator<Item=Position> {
     let mut rocks: Vec<_> = line.split(" -> ")
-        .flat_map(|pos| pos.split_once(",").and_then(|(x, y)| Some(Position(x.parse().ok()?, y.parse().ok()?))))
+        .flat_map(|pos| pos.split_once(',').and_then(|(x, y)| Some(Position(x.parse().ok()?, y.parse().ok()?))))
         .collect();
 
     let mut rock_surface = Vec::new();
     for pair in rocks.windows(2) {
-        match pair {
-            &[Position(x1, y1), Position(x2, y2)] if x1 == x2 => {
+        match *pair {
+            [Position(x1, y1), Position(x2, y2)] if x1 == x2 => {
                 for y in (y1.min(y2) + 1)..y1.max(y2) {
                     rock_surface.push(Position(x1, y));
                 }
             },
-            &[Position(x1, y1), Position(x2, y2)] if y1 == y2 => {
+            [Position(x1, y1), Position(x2, y2)] if y1 == y2 => {
                 for x in (x1.min(x2) + 1)..x1.max(x2) {
                     rock_surface.push(Position(x, y1));
                 }
@@ -47,18 +47,18 @@ fn read_line(line: &str) -> impl Iterator<Item=Position> {
 }
 
 fn try_move(blocks: &HashMap<Position, Block>, x: &mut usize, y: &mut usize) -> bool {
-    if !blocks.contains_key(&Position(*x, *y + 1)) {
+    if !blocks.contains_key(&Position(*x, *y + 1)) { // falls down
         *y += 1;
         true
-    } else if !blocks.contains_key(&Position(*x - 1, *y + 1)) {
+    } else if !blocks.contains_key(&Position(*x - 1, *y + 1)) { // falls left-down
         *x -= 1;
         *y += 1;
         true
-    } else if !blocks.contains_key(&Position(*x + 1, *y + 1)) {
+    } else if !blocks.contains_key(&Position(*x + 1, *y + 1)) { // falls right-down
         *x += 1;
         *y += 1;
         true
-    } else {
+    } else { // comes to rest
         false
     }
 }
@@ -67,11 +67,11 @@ fn solve_part_1(rocks: &HashMap<Position, Block>) -> usize {
     let mut blocks = rocks.clone();
     let max_y = blocks.iter().map(|(&Position(_, y), _)| y).max().unwrap();
 
-    let (mut x, mut y) = (500, 0);
-    while y <= max_y {
-        if !try_move(&blocks, &mut x, &mut y) {
-            blocks.insert(Position(x, y), Sand);
-            (x, y) = (500, 0);
+    let (mut sand_x, mut sand_y) = (500, 0);
+    while sand_y <= max_y {
+        if !try_move(&blocks, &mut sand_x, &mut sand_y) { // sand block came to rest
+            blocks.insert(Position(sand_x, sand_y), Sand);
+            (sand_x, sand_y) = (500, 0);
             continue;
         }
     }
@@ -82,12 +82,12 @@ fn solve_part_2(rocks: &HashMap<Position, Block>) -> usize {
     let mut blocks = rocks.clone();
     let max_y = blocks.iter().map(|(&Position(_, y), _)| y).max().unwrap();
 
-    let (mut x, mut y) = (500, 0);
+    let (mut sand_x, mut sand_y) = (500, 0);
     loop {
-        if y > max_y || !try_move(&blocks, &mut x, &mut y) {
-            blocks.insert(Position(x, y), Sand);
-            (x, y) = (500, 0);
-            if !try_move(&blocks, &mut x, &mut y) {
+        if sand_y > max_y || !try_move(&blocks, &mut sand_x, &mut sand_y) {
+            blocks.insert(Position(sand_x, sand_y), Sand);
+            (sand_x, sand_y) = (500, 0);
+            if !try_move(&blocks, &mut sand_x, &mut sand_y) { // sand block is blocked
                 return blocks.iter().filter(|(_, &block)| block == Sand).count() + 1;
             }
             continue;
@@ -96,7 +96,7 @@ fn solve_part_2(rocks: &HashMap<Position, Block>) -> usize {
 }
 
 fn main() {
-    let filename = args().skip(1).next().unwrap();
+    let filename = args().nth(1).unwrap();
     let rocks = read_file(&filename);
 
     println!("Part 1: {}", solve_part_1(&rocks));

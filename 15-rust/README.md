@@ -1,5 +1,12 @@
 # [Day 15: Beacon Exclusion Zone](https://adventofcode.com/2022/day/15) solution
 
+For part 2 of this problem, the search area contains a whopping 16 trillion positions.
+Storing, or even checking every single one is not (and will never be) a sensible solution.
+
+Thankfully, the problem description contains a hint: the beacon in question was not detected
+by any sensor **and** can only have a single position. This implies that all other positions are
+covered by sensors, so the distress beacon must lie on the border of 4 sensor detection ranges. 
+
 ## Expected result
 ```
 $ cargo run --release data.txt
