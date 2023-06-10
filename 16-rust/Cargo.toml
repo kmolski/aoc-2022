@@ -8,4 +8,5 @@ name = "proboscidea_volcanium"
 path = "ProboscideaVolcanium.rs"
 
 [dependencies]
+itertools = "0.10.5"
 regex = "1.7.1"

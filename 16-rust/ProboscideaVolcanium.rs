@@ -4,6 +4,7 @@ use std::env::args;
 use std::fs::File;
 use std::io::{BufRead, BufReader};
 
+use itertools::Itertools;
 use regex::Regex;
 
 type ValveEntry = (String, isize, Vec<String>);
@@ -84,106 +85,97 @@ impl Ord for Node {
     }
 }
 
-fn solve_part_1(name_map: &Valves, dist_map: &DistMap, aa_index: usize) -> isize {
+fn solve_astar(
+    node_to_flow: &HashMap<usize, isize>,
+    dist_map: &DistMap,
+    aa_index: usize,
+    max_time: isize,
+) -> isize {
     let start = Node {
         index: aa_index,
-        time_left: 30,
+        time_left: max_time,
         priority: 0,
     };
 
     let mut frontier = BinaryHeap::new();
     let mut visited: HashMap<Node, Vec<usize>> = HashMap::new();
-    let mut reward_so_far: HashMap<Node, isize> = HashMap::new();
+    let mut reward: HashMap<Node, isize> = HashMap::new();
 
     frontier.push(start);
     visited.insert(start, Vec::from([aa_index]));
-    reward_so_far.insert(start, 0);
+    reward.insert(start, 0);
 
     while !frontier.is_empty() {
         let current = frontier.pop().unwrap();
 
-        for (next, &time_cost) in dist_map[current.index]
-            .iter()
-            .enumerate()
-            .filter(|(i, _)| name_map[*i].1 > 0)
-        // positive-flow valves only
-        {
-            let flow = name_map[next].1;
-            let time_left = current.time_left - (time_cost + 1);
-            let relief = flow * time_left;
-            let new_reward = reward_so_far[&current] + relief;
-            let new_node = Node {
-                index: next,
-                time_left,
-                priority: relief,
-            };
+        for (next, &time_cost) in dist_map[current.index].iter().enumerate() {
+            if node_to_flow.contains_key(&next) {
+                let time_left = current.time_left - (time_cost + 1);
+                let relief = node_to_flow[&next] * time_left;
+                let new_reward = reward[&current] + relief;
+                let new_node = Node {
+                    index: next,
+                    time_left,
+                    priority: relief,
+                };
 
-            if time_left > 0
-                && !visited[&current].contains(&next)
-                && (!reward_so_far.contains_key(&new_node) || new_reward > reward_so_far[&new_node])
-            {
-                reward_so_far.insert(new_node, new_reward);
-                frontier.push(new_node);
+                if time_left > 0
+                    && !visited[&current].contains(&next)
+                    && (!reward.contains_key(&new_node) || new_reward > reward[&new_node])
+                {
+                    reward.insert(new_node, new_reward);
+                    frontier.push(new_node);
 
-                let mut new_visited = visited[&current].clone();
-                new_visited.push(new_node.index);
-                visited.insert(new_node, new_visited);
+                    let mut new_visited = visited[&current].clone();
+                    new_visited.push(new_node.index);
+                    visited.insert(new_node, new_visited);
+                }
             }
         }
     }
 
-    *reward_so_far.values().max().unwrap()
+    reward.into_values().max().unwrap()
+}
+
+fn solve_part_1(name_map: &Valves, dist_map: &DistMap, aa_index: usize) -> isize {
+    let valves_with_flow = name_map
+        .into_iter()
+        .enumerate()
+        .map(|(i, &(_, flow))| (i, flow))
+        .filter(|(_, flow)| flow > &0)
+        .collect();
+    solve_astar(&valves_with_flow, dist_map, aa_index, 30)
 }
 
 fn solve_part_2(name_map: &Valves, dist_map: &DistMap, aa_index: usize) -> isize {
-    let start = Node {
-        index: aa_index,
-        time_left: 26,
-        priority: 0,
-    };
+    let valves_with_flow: HashMap<_, _> = name_map
+        .into_iter()
+        .enumerate()
+        .map(|(i, &(_, flow))| (i, flow))
+        .filter(|(_, flow)| flow > &0)
+        .collect();
+    let valve_count = valves_with_flow.len();
 
-    let mut frontier = BinaryHeap::new();
-    let mut visited: HashMap<Node, Vec<usize>> = HashMap::new();
-    let mut reward_so_far: HashMap<Node, isize> = HashMap::new();
+    let mut max_score = isize::MIN;
+    // assume a roughly equal valve split is optimal
+    for i in (valve_count / 2)..(valve_count / 2 + 2) {
+        for human_split in valves_with_flow.iter().combinations(i) {
+            let human_split: HashMap<_, _> = human_split
+                .into_iter()
+                .map(|(i, flow)| (*i, *flow))
+                .collect();
+            let mut elephant_split = valves_with_flow.clone();
+            elephant_split.retain(|k, _| !human_split.contains_key(k));
 
-    frontier.push(start);
-    visited.insert(start, Vec::from([aa_index]));
-    reward_so_far.insert(start, 0);
-
-    while !frontier.is_empty() {
-        let current = frontier.pop().unwrap();
-
-        for (next, &time_cost) in dist_map[current.index]
-            .iter()
-            .enumerate()
-            .filter(|(i, _)| name_map[*i].1 > 0)
-        // positive-flow valves only
-        {
-            let flow = name_map[next].1;
-            let time_left = current.time_left - (time_cost + 1);
-            let relief = flow * time_left;
-            let new_reward = reward_so_far[&current] + relief;
-            let new_node = Node {
-                index: next,
-                time_left,
-                priority: relief,
-            };
-
-            if time_left > 0
-                && !visited[&current].contains(&next)
-                && (!reward_so_far.contains_key(&new_node) || new_reward > reward_so_far[&new_node])
-            {
-                reward_so_far.insert(new_node, new_reward);
-                frontier.push(new_node);
-
-                let mut new_visited = visited[&current].clone();
-                new_visited.push(new_node.index);
-                visited.insert(new_node, new_visited);
+            let score = solve_astar(&human_split, dist_map, aa_index, 26)
+                + solve_astar(&elephant_split, dist_map, aa_index, 26);
+            if score > max_score {
+                max_score = score;
             }
         }
     }
 
-    *reward_so_far.values().max().unwrap()
+    max_score
 }
 
 fn main() {
