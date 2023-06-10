@@ -8,6 +8,8 @@ $ cargo run --release example.txt
 Part 1: 1651
 Part 2: 1707
 $ cargo run --release data.txt
+    Finished release [optimized] target(s) in 0.01s
+     Running `target/release/proboscidea_volcanium data.txt`
 Part 1: 2119
 Part 2: 2615
 ```
