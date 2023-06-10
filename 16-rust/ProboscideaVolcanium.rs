@@ -139,7 +139,7 @@ fn solve_astar(
 
 fn solve_part_1(name_map: &Valves, dist_map: &DistMap, aa_index: usize) -> isize {
     let valves_with_flow = name_map
-        .into_iter()
+        .iter()
         .enumerate()
         .map(|(i, &(_, flow))| (i, flow))
         .filter(|(_, flow)| flow > &0)
@@ -149,7 +149,7 @@ fn solve_part_1(name_map: &Valves, dist_map: &DistMap, aa_index: usize) -> isize
 
 fn solve_part_2(name_map: &Valves, dist_map: &DistMap, aa_index: usize) -> isize {
     let valves_with_flow: HashMap<_, _> = name_map
-        .into_iter()
+        .iter()
         .enumerate()
         .map(|(i, &(_, flow))| (i, flow))
         .filter(|(_, flow)| flow > &0)
