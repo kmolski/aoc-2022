@@ -1,0 +1,8 @@
+[package]
+name = "BoilingBoulders"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "boiling_boulders"
+path = "BoilingBoulders.rs"
