@@ -19,6 +19,7 @@ My Advent of Code 2022 solutions in the following languages:
   - [Day 14: Regolith Reservoir](./14-rust)
   - [Day 15: Beacon Exclusion Zone](./15-rust)
   - [Day 16: Proboscidea Volcanium](./16-rust)
+  - [Day 17: Pyroclastic Flow](./17-rust)
 - Python
   - [Day 13: Distress Signal](./13-python)
 
