@@ -1,4 +1,4 @@
-# [Day 18: Boiling Boulders](https://adventofcode.com/2022/day/17) solution
+# [Day 18: Boiling Boulders](https://adventofcode.com/2022/day/18) solution
 
 ## Expected result
 ```
