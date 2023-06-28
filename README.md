@@ -21,6 +21,7 @@ My Advent of Code 2022 solutions in the following languages:
   - [Day 16: Proboscidea Volcanium](./16-rust)
   - [Day 17: Pyroclastic Flow](./17-rust)
   - [Day 18: Boiling Boulders](./18-rust)
+  - [Day 19: Not Enough Minerals](./19-rust)
 - Python
   - [Day 13: Distress Signal](./13-python)
 

@@ -1,0 +1,11 @@
+[package]
+name = "NotEnoughMinerals"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "not_enough_minerals"
+path = "NotEnoughMinerals.rs"
+
+[dependencies]
+regex = "1.7.1"
