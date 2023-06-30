@@ -19,8 +19,7 @@ fn mix(coordinates: &[(usize, isize)], rounds: isize) -> Vec<(usize, isize)> {
     for _ in 0..rounds {
         for &value in coordinates {
             let old_index = coords.iter().position(|&v| v == value).expect("No index found");
-            let mut new_index = old_index as isize + value.1;
-            new_index = ((new_index % coords_len) + coords_len) % coords_len;
+            let new_index = (old_index as isize + value.1).rem_euclid(coords_len);
             let value = coords.remove(old_index);
             coords.insert(new_index as usize, value);
         }
