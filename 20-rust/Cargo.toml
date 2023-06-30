@@ -1,0 +1,8 @@
+[package]
+name = "GrovePositioningSystem"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "grove_positioning_system"
+path = "GrovePositioningSystem.rs"
