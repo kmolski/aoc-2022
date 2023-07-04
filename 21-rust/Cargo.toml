@@ -1,0 +1,8 @@
+[package]
+name = "MonkeyMath"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "monkey_math"
+path = "MonkeyMath.rs"

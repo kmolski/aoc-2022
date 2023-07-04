@@ -23,6 +23,7 @@ My Advent of Code 2022 solutions in the following languages:
   - [Day 18: Boiling Boulders](./18-rust)
   - [Day 19: Not Enough Minerals](./19-rust)
   - [Day 20: Grove Positioning System](./20-rust)
+  - [Day 21: Monkey Math](./21-rust)
 - Python
   - [Day 13: Distress Signal](./13-python)
 
