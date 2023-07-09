@@ -24,6 +24,7 @@ My Advent of Code 2022 solutions in the following languages:
   - [Day 19: Not Enough Minerals](./19-rust)
   - [Day 20: Grove Positioning System](./20-rust)
   - [Day 21: Monkey Math](./21-rust)
+  - [Day 22: Monkey Map](./22-rust)
 - Python
   - [Day 13: Distress Signal](./13-python)
 
