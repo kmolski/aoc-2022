@@ -1,0 +1,8 @@
+[package]
+name = "FullOfHotAir"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "full_of_hot_air"
+path = "FullOfHotAir.rs"
