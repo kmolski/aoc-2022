@@ -1,0 +1,11 @@
+[package]
+name = "UnstableDiffusion"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "unstable_diffusion"
+path = "UnstableDiffusion.rs"
+
+[dependencies]
+itertools = "0.11.0"
