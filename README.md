@@ -25,8 +25,11 @@ My Advent of Code 2022 solutions in the following languages:
   - [Day 20: Grove Positioning System](./20-rust)
   - [Day 21: Monkey Math](./21-rust)
   - [Day 22: Monkey Map](./22-rust)
+  - [Day 23: Unstable Diffusion](./23-rust)
+  - [Day 25: Full of Hot Air](./25-rust)
 - Python
   - [Day 13: Distress Signal](./13-python)
+  - [Day 24: Blizzard Basin](./24-python)
 
 Each top-level folder contains:
 - the solution source code
